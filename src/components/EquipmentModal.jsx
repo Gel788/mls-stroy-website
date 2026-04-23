@@ -235,6 +235,10 @@ export default function EquipmentModal({ item, onClose }) {
           }}>
             <a
               href="tel:+79009999999"
+              onMouseDown={(e) => { e.currentTarget.style.transform = 'scale(0.96)'; e.currentTarget.style.boxShadow = '0 2px 10px rgba(200,168,75,0.2)'; }}
+              onMouseUp={(e)   => { e.currentTarget.style.transform = 'scale(1)';    e.currentTarget.style.boxShadow = '0 6px 24px rgba(200,168,75,0.35)'; }}
+              onTouchStart={(e) => { e.currentTarget.style.transform = 'scale(0.96)'; e.currentTarget.style.opacity = '0.88'; }}
+              onTouchEnd={(e)   => { e.currentTarget.style.transform = 'scale(1)';    e.currentTarget.style.opacity = '1'; }}
               style={{
                 flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
                 padding: '15px',
@@ -244,6 +248,7 @@ export default function EquipmentModal({ item, onClose }) {
                 borderRadius: 10, fontFamily: 'Montserrat, sans-serif',
                 textDecoration: 'none',
                 boxShadow: '0 6px 24px rgba(200,168,75,0.35)',
+                transition: 'transform 0.18s, box-shadow 0.18s, opacity 0.18s',
                 WebkitTapHighlightColor: 'transparent',
               }}
             >
@@ -252,15 +257,20 @@ export default function EquipmentModal({ item, onClose }) {
             <a
               href="https://wa.me/79009999999"
               target="_blank" rel="noopener noreferrer"
+              onMouseDown={(e) => { e.currentTarget.style.transform = 'scale(0.96)'; }}
+              onMouseUp={(e)   => { e.currentTarget.style.transform = 'scale(1)'; }}
+              onTouchStart={(e) => { e.currentTarget.style.transform = 'scale(0.96)'; e.currentTarget.style.opacity = '0.82'; }}
+              onTouchEnd={(e)   => { e.currentTarget.style.transform = 'scale(1)';    e.currentTarget.style.opacity = '1'; }}
               style={{
                 flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
                 padding: '15px',
-                background: 'rgba(255,255,255,0.05)',
+                background: 'rgba(255,255,255,0.06)',
                 color: '#ccc', fontSize: 13, fontWeight: 700,
                 letterSpacing: '0.06em', textTransform: 'uppercase',
                 borderRadius: 10, fontFamily: 'Montserrat, sans-serif',
                 textDecoration: 'none',
-                border: '1px solid rgba(255,255,255,0.1)',
+                border: '1px solid rgba(255,255,255,0.15)',
+                transition: 'transform 0.18s, opacity 0.18s',
                 WebkitTapHighlightColor: 'transparent',
               }}
             >

@@ -41,52 +41,51 @@ export default function FloatingCTA() {
               >
                 <a
                   href="tel:+79009999999"
+                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(200,168,75,0.7)'; e.currentTarget.style.color = '#c8a84b'; e.currentTarget.style.background = 'rgba(200,168,75,0.07)'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(200,168,75,0.25)'; e.currentTarget.style.color = '#ddd'; e.currentTarget.style.background = 'rgba(15,15,15,0.95)'; }}
+                  onMouseDown={(e) => { e.currentTarget.style.transform = 'scale(0.96)'; }}
+                  onMouseUp={(e)   => { e.currentTarget.style.transform = 'scale(1)'; }}
                   style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 10,
-                    padding: '11px 18px',
-                    background: '#111',
+                    display: 'flex', alignItems: 'center', gap: 10,
+                    padding: '12px 20px',
+                    background: 'rgba(15,15,15,0.95)',
                     border: '1px solid rgba(200,168,75,0.25)',
-                    borderRadius: 30,
-                    color: '#ddd',
-                    fontSize: 13,
-                    fontWeight: 600,
+                    borderRadius: 8,
+                    color: '#ddd', fontSize: 13, fontWeight: 600,
                     fontFamily: 'Montserrat, sans-serif',
                     textDecoration: 'none',
-                    boxShadow: '0 8px 30px rgba(0,0,0,0.5)',
+                    boxShadow: '0 8px 30px rgba(0,0,0,0.6)',
                     whiteSpace: 'nowrap',
-                    transition: 'all 0.2s',
+                    transition: 'all 0.22s',
+                    backdropFilter: 'blur(12px)',
+                    WebkitTapHighlightColor: 'transparent',
                   }}
-                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#c8a84b'; e.currentTarget.style.color = '#c8a84b'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(200,168,75,0.25)'; e.currentTarget.style.color = '#ddd'; }}
                 >
                   <Phone size={15} color="#c8a84b" />
                   Позвонить
                 </a>
                 <a
                   href="https://wa.me/79009999999"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target="_blank" rel="noopener noreferrer"
+                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(200,168,75,0.7)'; e.currentTarget.style.color = '#c8a84b'; e.currentTarget.style.background = 'rgba(200,168,75,0.07)'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(200,168,75,0.25)'; e.currentTarget.style.color = '#ddd'; e.currentTarget.style.background = 'rgba(15,15,15,0.95)'; }}
+                  onMouseDown={(e) => { e.currentTarget.style.transform = 'scale(0.96)'; }}
+                  onMouseUp={(e)   => { e.currentTarget.style.transform = 'scale(1)'; }}
                   style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 10,
-                    padding: '11px 18px',
-                    background: '#111',
+                    display: 'flex', alignItems: 'center', gap: 10,
+                    padding: '12px 20px',
+                    background: 'rgba(15,15,15,0.95)',
                     border: '1px solid rgba(200,168,75,0.25)',
-                    borderRadius: 30,
-                    color: '#ddd',
-                    fontSize: 13,
-                    fontWeight: 600,
+                    borderRadius: 8,
+                    color: '#ddd', fontSize: 13, fontWeight: 600,
                     fontFamily: 'Montserrat, sans-serif',
                     textDecoration: 'none',
-                    boxShadow: '0 8px 30px rgba(0,0,0,0.5)',
+                    boxShadow: '0 8px 30px rgba(0,0,0,0.6)',
                     whiteSpace: 'nowrap',
-                    transition: 'all 0.2s',
+                    transition: 'all 0.22s',
+                    backdropFilter: 'blur(12px)',
+                    WebkitTapHighlightColor: 'transparent',
                   }}
-                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#c8a84b'; e.currentTarget.style.color = '#c8a84b'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(200,168,75,0.25)'; e.currentTarget.style.color = '#ddd'; }}
                 >
                   <MessageCircle size={15} color="#c8a84b" />
                   WhatsApp

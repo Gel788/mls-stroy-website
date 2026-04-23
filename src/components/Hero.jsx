@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDown, MapPin, ChevronRight } from 'lucide-react';
+import { ArrowDown, MapPin, ChevronRight, LayoutGrid } from 'lucide-react';
 
 const WORDS = ['СПЕЦТЕХНИКИ', 'ЭКСКАВАТОРОВ', 'ПОГРУЗЧИКОВ', 'КАТКОВ'];
 
@@ -8,6 +8,8 @@ export default function Hero() {
   const canvasRef = useRef(null);
   const [wordIdx, setWordIdx] = useState(0);
   const [visible, setVisible] = useState(true);
+  const [pHov, setPHov] = useState(false);
+  const [sHov, setSHov] = useState(false);
 
   // Word cycle
   useEffect(() => {
@@ -217,65 +219,65 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.65 }}
             style={{ display: 'flex', gap: 14, flexWrap: 'wrap', marginBottom: 56 }}
           >
+            {/* ── Primary ── */}
             <button
               onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
+              onMouseEnter={() => setPHov(true)}
+              onMouseLeave={() => setPHov(false)}
+              onMouseDown={(e) => { e.currentTarget.style.transform = 'translateY(1px) scale(0.97)'; e.currentTarget.style.boxShadow = '0 4px 20px rgba(200,168,75,0.35)'; }}
+              onMouseUp={(e)   => { e.currentTarget.style.transform = 'translateY(-3px) scale(1.02)'; e.currentTarget.style.boxShadow = '0 14px 60px rgba(200,168,75,0.65)'; }}
               style={{
                 display: 'flex', alignItems: 'center', gap: 10,
                 padding: '16px 36px',
                 background: 'linear-gradient(135deg, #c8a84b 0%, #e8c96a 50%, #9d7a28 100%)',
                 backgroundSize: '200% 100%',
                 color: '#000',
-                fontSize: 12,
-                fontWeight: 800,
-                letterSpacing: '0.13em',
-                textTransform: 'uppercase',
-                borderRadius: 3,
+                fontSize: 12, fontWeight: 800,
+                letterSpacing: '0.13em', textTransform: 'uppercase',
+                borderRadius: 8,
                 fontFamily: 'Montserrat, sans-serif',
-                boxShadow: '0 8px 40px rgba(200,168,75,0.4)',
-                transition: 'all 0.35s',
-                border: 'none',
-                cursor: 'pointer',
+                boxShadow: pHov ? '0 14px 60px rgba(200,168,75,0.65)' : '0 8px 40px rgba(200,168,75,0.4)',
+                transform: pHov ? 'translateY(-3px) scale(1.02)' : 'translateY(0) scale(1)',
+                transition: 'transform 0.28s cubic-bezier(0.34,1.2,0.64,1), box-shadow 0.28s',
+                border: 'none', cursor: 'pointer',
                 animation: 'btnShimmer 3s ease infinite',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = '0 14px 60px rgba(200,168,75,0.65)';
-                e.currentTarget.style.transform = 'translateY(-3px) scale(1.02)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = '0 8px 40px rgba(200,168,75,0.4)';
-                e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                WebkitTapHighlightColor: 'transparent',
               }}
             >
-              Получить расчёт <ChevronRight size={14} />
+              Получить расчёт
+              <span style={{
+                display: 'inline-flex', alignItems: 'center',
+                transform: pHov ? 'translateX(4px)' : 'translateX(0)',
+                transition: 'transform 0.25s cubic-bezier(0.34,1.2,0.64,1)',
+              }}>
+                <ChevronRight size={15} strokeWidth={2.5} />
+              </span>
             </button>
+
+            {/* ── Secondary ── */}
             <button
               onClick={() => document.querySelector('#catalog')?.scrollIntoView({ behavior: 'smooth' })}
+              onMouseEnter={() => setSHov(true)}
+              onMouseLeave={() => setSHov(false)}
+              onMouseDown={(e) => { e.currentTarget.style.transform = 'scale(0.97)'; }}
+              onMouseUp={(e)   => { e.currentTarget.style.transform = 'scale(1)'; }}
               style={{
-                padding: '16px 36px',
-                background: 'rgba(255,255,255,0.04)',
-                color: '#ccc',
-                fontSize: 12,
-                fontWeight: 600,
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                borderRadius: 3,
+                display: 'flex', alignItems: 'center', gap: 9,
+                padding: '16px 32px',
+                background: sHov ? 'rgba(200,168,75,0.08)' : 'rgba(255,255,255,0.06)',
+                color: sHov ? '#c8a84b' : '#d0d0d0',
+                fontSize: 12, fontWeight: 700,
+                letterSpacing: '0.1em', textTransform: 'uppercase',
+                borderRadius: 8,
                 fontFamily: 'Montserrat, sans-serif',
-                border: '1px solid rgba(255,255,255,0.12)',
-                transition: 'all 0.3s',
+                border: `1px solid ${sHov ? 'rgba(200,168,75,0.45)' : 'rgba(255,255,255,0.18)'}`,
+                transition: 'all 0.28s cubic-bezier(0.34,1.2,0.64,1)',
                 cursor: 'pointer',
-                backdropFilter: 'blur(8px)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(200,168,75,0.4)';
-                e.currentTarget.style.color = '#c8a84b';
-                e.currentTarget.style.background = 'rgba(200,168,75,0.06)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)';
-                e.currentTarget.style.color = '#ccc';
-                e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
+                backdropFilter: 'blur(10px)',
+                WebkitTapHighlightColor: 'transparent',
               }}
             >
+              <LayoutGrid size={14} strokeWidth={2} />
               Смотреть каталог
             </button>
           </motion.div>

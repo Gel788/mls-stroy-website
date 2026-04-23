@@ -211,18 +211,22 @@ export default function Contact() {
                 </p>
                 <button
                   onClick={() => setSent(false)}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(200,168,75,0.08)'; e.currentTarget.style.borderColor = 'rgba(200,168,75,0.55)'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'rgba(200,168,75,0.3)'; }}
+                  onMouseDown={(e) => { e.currentTarget.style.transform = 'scale(0.97)'; }}
+                  onMouseUp={(e)   => { e.currentTarget.style.transform = 'scale(1)'; }}
                   style={{
-                    marginTop: 24,
-                    padding: '10px 24px',
+                    marginTop: 24, padding: '11px 28px',
                     background: 'transparent',
                     border: '1px solid rgba(200,168,75,0.3)',
-                    borderRadius: 3,
+                    borderRadius: 8,
                     color: '#c8a84b',
-                    fontSize: 12,
-                    fontWeight: 600,
+                    fontSize: 12, fontWeight: 700,
                     cursor: 'pointer',
                     fontFamily: 'Montserrat, sans-serif',
                     letterSpacing: '0.08em',
+                    transition: 'all 0.22s',
+                    WebkitTapHighlightColor: 'transparent',
                   }}
                 >
                   Отправить ещё
@@ -319,28 +323,25 @@ export default function Contact() {
                 <button
                   type="submit"
                   disabled={loading}
+                  onMouseEnter={(e) => { if (!loading) { e.currentTarget.style.boxShadow = '0 12px 44px rgba(200,168,75,0.55)'; e.currentTarget.style.transform = 'translateY(-2px)'; } }}
+                  onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 6px 30px rgba(200,168,75,0.28)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+                  onMouseDown={(e) => { if (!loading) { e.currentTarget.style.transform = 'translateY(1px) scale(0.98)'; e.currentTarget.style.boxShadow = '0 3px 16px rgba(200,168,75,0.25)'; } }}
+                  onMouseUp={(e)   => { if (!loading) { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 12px 44px rgba(200,168,75,0.55)'; } }}
                   style={{
-                    width: '100%',
-                    padding: '15px',
-                    background: loading ? 'rgba(200,168,75,0.4)' : 'linear-gradient(135deg, #c8a84b, #9d7a28)',
+                    width: '100%', padding: '16px',
+                    background: loading ? 'rgba(200,168,75,0.35)' : 'linear-gradient(135deg, #c8a84b, #9d7a28)',
                     color: '#000',
-                    fontSize: 13,
-                    fontWeight: 700,
-                    letterSpacing: '0.12em',
-                    textTransform: 'uppercase',
-                    borderRadius: 3,
+                    fontSize: 13, fontWeight: 800,
+                    letterSpacing: '0.12em', textTransform: 'uppercase',
+                    borderRadius: 8,
                     fontFamily: 'Montserrat, sans-serif',
                     border: 'none',
                     cursor: loading ? 'not-allowed' : 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: 8,
-                    boxShadow: '0 6px 30px rgba(200,168,75,0.25)',
-                    transition: 'all 0.3s',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                    boxShadow: '0 6px 30px rgba(200,168,75,0.28)',
+                    transition: 'transform 0.25s cubic-bezier(0.34,1.2,0.64,1), box-shadow 0.25s',
+                    WebkitTapHighlightColor: 'transparent',
                   }}
-                  onMouseEnter={(e) => { if (!loading) e.currentTarget.style.boxShadow = '0 10px 40px rgba(200,168,75,0.5)'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 6px 30px rgba(200,168,75,0.25)'; }}
                 >
                   {loading ? (
                     <span style={{ opacity: 0.7 }}>Отправка...</span>
