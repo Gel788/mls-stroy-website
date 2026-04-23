@@ -1,8 +1,23 @@
-import { useState, useMemo, useRef, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, SlidersHorizontal, X } from 'lucide-react';
+import {
+  LayoutGrid, Hammer, ArrowUpFromLine, Mountain,
+  RotateCw, MoveUp, Truck, Package, Wrench, X,
+} from 'lucide-react';
 import { equipment, categories } from '../data/equipment';
 import EquipmentModal from './EquipmentModal';
+
+const CAT_ICONS = {
+  all:        LayoutGrid,
+  excavator:  Hammer,
+  loader:     ArrowUpFromLine,
+  bulldozer:  Mountain,
+  roller:     RotateCw,
+  crane:      MoveUp,
+  truck:      Truck,
+  trailer:    Package,
+  special:    Wrench,
+};
 
 const CAT_SINGULAR = {
   all:        '',
@@ -53,9 +68,6 @@ function AnimatedCount({ value }) {
 export default function Catalog() {
   const [activeCategory, setActiveCategory] = useState('all');
   const [selected, setSelected] = useState(null);
-  const [canScrollLeft, setCanScrollLeft]   = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(false);
-  const trackRef = useRef(null);
 
   const filtered = useMemo(
     () =>
@@ -66,29 +78,6 @@ export default function Catalog() {
   );
 
   const activeCatLabel = categories.find(c => c.id === activeCategory)?.label || '';
-
-  // ── scroll arrows visibility ──────────────────────────────────────────────
-  const checkScroll = () => {
-    const el = trackRef.current;
-    if (!el) return;
-    setCanScrollLeft(el.scrollLeft > 8);
-    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 8);
-  };
-
-  useEffect(() => {
-    checkScroll();
-    const el = trackRef.current;
-    el?.addEventListener('scroll', checkScroll, { passive: true });
-    window.addEventListener('resize', checkScroll);
-    return () => {
-      el?.removeEventListener('scroll', checkScroll);
-      window.removeEventListener('resize', checkScroll);
-    };
-  }, []);
-
-  const scrollTrack = (dir) => {
-    trackRef.current?.scrollBy({ left: dir * 220, behavior: 'smooth' });
-  };
 
   return (
     <section
@@ -141,160 +130,111 @@ export default function Catalog() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.15 }}
-          style={{ marginBottom: 36 }}
+          style={{ marginBottom: 40 }}
         >
-          {/* Filter row */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          {/* Chips */}
+          <div style={{
+            display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center',
+          }}>
+            {categories.map((cat) => {
+              const isActive = cat.id === activeCategory;
+              const count = cat.id === 'all'
+                ? equipment.length
+                : equipment.filter(e => e.category === cat.id).length;
+              const Icon = CAT_ICONS[cat.id];
 
-            {/* Scroll left */}
-            <button
-              onClick={() => scrollTrack(-1)}
-              aria-label="Прокрутить влево"
-              style={{
-                flexShrink: 0, width: 38, height: 38, borderRadius: '50%',
-                border: `1px solid ${canScrollLeft ? 'rgba(200,168,75,0.35)' : 'rgba(255,255,255,0.08)'}`,
-                background: canScrollLeft ? 'rgba(200,168,75,0.08)' : 'rgba(255,255,255,0.02)',
-                color: canScrollLeft ? 'var(--gold)' : '#3a3a3a',
-                cursor: canScrollLeft ? 'pointer' : 'default',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                transition: 'all 0.3s',
-              }}
-            >
-              <ChevronLeft size={15} />
-            </button>
-
-            {/* Track */}
-            <div style={{ position: 'relative', flex: 1, minWidth: 0 }}>
-              {/* left fade */}
-              <div style={{
-                position: 'absolute', left: 0, top: 0, bottom: 0, width: 32, zIndex: 2,
-                background: 'linear-gradient(to right, var(--bg-secondary), transparent)',
-                pointerEvents: 'none',
-                opacity: canScrollLeft ? 1 : 0,
-                transition: 'opacity 0.3s',
-              }} />
-              {/* right fade */}
-              <div style={{
-                position: 'absolute', right: 0, top: 0, bottom: 0, width: 32, zIndex: 2,
-                background: 'linear-gradient(to left, var(--bg-secondary), transparent)',
-                pointerEvents: 'none',
-                opacity: canScrollRight ? 1 : 0,
-                transition: 'opacity 0.3s',
-              }} />
-
-              <div
-                ref={trackRef}
-                style={{
-                  display: 'flex',
-                  gap: 4,
-                  padding: '5px 6px',
-                  background: 'rgba(255,255,255,0.025)',
-                  border: '1px solid rgba(255,255,255,0.06)',
-                  borderRadius: 13,
-                  overflowX: 'auto',
-                  scrollbarWidth: 'none',
-                  msOverflowStyle: 'none',
-                }}
-              >
-                <style>{`
-                  #cat-track::-webkit-scrollbar { display: none; }
-                  .filter-btn { -webkit-tap-highlight-color: transparent; }
-                  .filter-btn:hover .filter-label { color: #aaa !important; }
-                  .filter-btn.active-cat .filter-label { color: #000 !important; }
-                `}</style>
-
-                {categories.map((cat) => {
-                  const isActive = cat.id === activeCategory;
-                  const count = cat.id === 'all'
-                    ? equipment.length
-                    : equipment.filter(e => e.category === cat.id).length;
-
-                  return (
-                    <button
-                      key={cat.id}
-                      onClick={() => setActiveCategory(cat.id)}
-                      className={`filter-btn${isActive ? ' active-cat' : ''}`}
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveCategory(cat.id)}
+                  onMouseEnter={(e) => {
+                    if (!isActive) {
+                      e.currentTarget.style.borderColor = 'rgba(200,168,75,0.35)';
+                      e.currentTarget.style.background  = 'rgba(200,168,75,0.04)';
+                      e.currentTarget.querySelector('.flabel').style.color = '#bbb';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isActive) {
+                      e.currentTarget.style.borderColor = 'rgba(255,255,255,0.09)';
+                      e.currentTarget.style.background  = 'rgba(255,255,255,0.025)';
+                      e.currentTarget.querySelector('.flabel').style.color = '#666';
+                    }
+                  }}
+                  style={{
+                    position: 'relative',
+                    display: 'flex', alignItems: 'center', gap: 7,
+                    padding: '10px 18px',
+                    borderRadius: 10,
+                    border: `1px solid ${isActive ? 'transparent' : 'rgba(255,255,255,0.09)'}`,
+                    background: isActive ? 'transparent' : 'rgba(255,255,255,0.025)',
+                    cursor: 'pointer', outline: 'none',
+                    transition: 'border-color 0.22s, background 0.22s',
+                    WebkitTapHighlightColor: 'transparent',
+                    zIndex: 0,
+                  }}
+                >
+                  {/* Sliding gold pill */}
+                  {isActive && (
+                    <motion.div
+                      layoutId="filterPill"
                       style={{
-                        position: 'relative', flexShrink: 0,
-                        padding: '9px 16px', borderRadius: 9,
-                        border: 'none', background: 'transparent',
-                        cursor: 'pointer', zIndex: 1,
-                        display: 'flex', alignItems: 'center', gap: 7,
-                        whiteSpace: 'nowrap',
-                        transition: 'color 0.2s',
-                        outline: 'none',
+                        position: 'absolute', inset: 0, borderRadius: 10, zIndex: -1,
+                        background: 'linear-gradient(135deg, #c8a84b 0%, #e8cc60 100%)',
+                        boxShadow: '0 4px 18px rgba(200,168,75,0.42), 0 0 0 1px rgba(200,168,75,0.18)',
                       }}
-                    >
-                      {/* Sliding gold pill */}
-                      {isActive && (
-                        <motion.div
-                          layoutId="filterPill"
-                          style={{
-                            position: 'absolute', inset: 0, borderRadius: 9, zIndex: -1,
-                            background: 'linear-gradient(135deg, #c8a84b 0%, #e4c15a 100%)',
-                            boxShadow: '0 3px 16px rgba(200,168,75,0.45), 0 0 0 1px rgba(200,168,75,0.2)',
-                          }}
-                          transition={{ type: 'spring', stiffness: 460, damping: 38 }}
-                        />
-                      )}
+                      transition={{ type: 'spring', stiffness: 440, damping: 36 }}
+                    />
+                  )}
 
-                      <span
-                        className="filter-label"
-                        style={{
-                          fontFamily: 'Montserrat, sans-serif',
-                          fontSize: 12, fontWeight: 700, letterSpacing: '0.05em',
-                          color: isActive ? '#000' : '#5a5a5a',
-                          transition: 'color 0.2s',
-                          pointerEvents: 'none',
-                        }}
-                      >
-                        {cat.label}
-                      </span>
-
-                      {/* Count badge */}
-                      <span style={{
-                        fontFamily: 'Montserrat, sans-serif',
-                        fontSize: 10, fontWeight: 800,
-                        background: isActive ? 'rgba(0,0,0,0.18)' : 'rgba(255,255,255,0.06)',
-                        color: isActive ? 'rgba(0,0,0,0.65)' : '#3a3a3a',
-                        borderRadius: 20, padding: '2px 7px',
-                        minWidth: 22, textAlign: 'center',
-                        transition: 'all 0.25s',
+                  {/* Icon */}
+                  {Icon && (
+                    <Icon
+                      size={14}
+                      style={{
+                        color: isActive ? '#000' : '#555',
+                        flexShrink: 0,
                         pointerEvents: 'none',
-                        lineHeight: 1.5,
-                      }}>
-                        {count}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
+                        transition: 'color 0.2s',
+                      }}
+                    />
+                  )}
 
-            {/* Scroll right */}
-            <button
-              onClick={() => scrollTrack(1)}
-              aria-label="Прокрутить вправо"
-              style={{
-                flexShrink: 0, width: 38, height: 38, borderRadius: '50%',
-                border: `1px solid ${canScrollRight ? 'rgba(200,168,75,0.35)' : 'rgba(255,255,255,0.08)'}`,
-                background: canScrollRight ? 'rgba(200,168,75,0.08)' : 'rgba(255,255,255,0.02)',
-                color: canScrollRight ? 'var(--gold)' : '#3a3a3a',
-                cursor: canScrollRight ? 'pointer' : 'default',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                transition: 'all 0.3s',
-              }}
-            >
-              <ChevronRight size={15} />
-            </button>
+                  {/* Label */}
+                  <span
+                    className="flabel"
+                    style={{
+                      fontFamily: 'Montserrat, sans-serif',
+                      fontSize: 12, fontWeight: 700, letterSpacing: '0.05em',
+                      color: isActive ? '#000' : '#666',
+                      whiteSpace: 'nowrap', pointerEvents: 'none',
+                      transition: 'color 0.22s',
+                    }}
+                  >
+                    {cat.label}
+                  </span>
+
+                  {/* Count */}
+                  <span style={{
+                    fontFamily: 'Montserrat, sans-serif',
+                    fontSize: 10, fontWeight: 800, lineHeight: 1.5,
+                    padding: '1px 7px', borderRadius: 20, minWidth: 22, textAlign: 'center',
+                    background: isActive ? 'rgba(0,0,0,0.16)' : 'rgba(255,255,255,0.05)',
+                    color: isActive ? 'rgba(0,0,0,0.6)' : '#444',
+                    pointerEvents: 'none', transition: 'all 0.22s',
+                  }}>
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
           </div>
 
           {/* Results meta */}
           <div style={{
-            marginTop: 14, paddingLeft: 4,
-            display: 'flex', alignItems: 'center', gap: 8,
+            marginTop: 20, display: 'flex', alignItems: 'center',
+            justifyContent: 'center', gap: 8,
           }}>
-            <SlidersHorizontal size={13} color="#3a3a3a" />
             <span style={{ fontSize: 12, color: '#3a3a3a', fontFamily: 'Montserrat, sans-serif' }}>
               Показано
             </span>
@@ -302,28 +242,35 @@ export default function Catalog() {
             <span style={{ fontSize: 12, color: '#3a3a3a', fontFamily: 'Montserrat, sans-serif' }}>
               {filtered.length === equipment.length ? 'единиц' : `из ${equipment.length}`}
             </span>
+
             <AnimatePresence>
               {activeCategory !== 'all' && (
                 <motion.button
                   key="reset"
-                  initial={{ opacity: 0, scale: 0.7, x: -6 }}
-                  animate={{ opacity: 1, scale: 1, x: 0 }}
-                  exit={{ opacity: 0, scale: 0.7, x: -6 }}
+                  initial={{ opacity: 0, scale: 0.75 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.75 }}
                   transition={{ duration: 0.2 }}
                   onClick={() => setActiveCategory('all')}
                   style={{
-                    display: 'flex', alignItems: 'center', gap: 4,
-                    padding: '3px 10px 3px 8px', borderRadius: 20,
-                    border: '1px solid rgba(200,168,75,0.25)',
-                    background: 'rgba(200,168,75,0.06)',
+                    display: 'flex', alignItems: 'center', gap: 5,
+                    padding: '4px 11px 4px 9px', borderRadius: 20,
+                    border: '1px solid rgba(200,168,75,0.28)',
+                    background: 'rgba(200,168,75,0.07)',
                     color: 'var(--gold)', cursor: 'pointer',
                     fontFamily: 'Montserrat, sans-serif',
-                    fontSize: 11, fontWeight: 600, letterSpacing: '0.03em',
-                    transition: 'all 0.2s',
+                    fontSize: 11, fontWeight: 600,
+                    transition: 'all 0.2s', outline: 'none',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'rgba(200,168,75,0.14)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'rgba(200,168,75,0.07)';
                   }}
                 >
-                  <X size={11} />
-                  {activeCatLabel}
+                  <X size={11} strokeWidth={2.5} />
+                  Сбросить
                 </motion.button>
               )}
             </AnimatePresence>
