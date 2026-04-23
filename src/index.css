@@ -75,14 +75,14 @@ input, textarea {
   color: var(--bg-primary);
 }
 
-/* Smooth transitions after splash */
+/* Smooth fade after splash — NO transform (would break position:fixed inside main) */
 main {
   animation: pageIn 0.5s ease forwards;
 }
 
 @keyframes pageIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 /* Gold shimmer for accents */

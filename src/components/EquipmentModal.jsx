@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion } from 'framer-motion';
 import { X, Phone, MessageCircle, CheckCircle2 } from 'lucide-react';
 
@@ -48,7 +49,7 @@ export default function EquipmentModal({ item, onClose }) {
         transition: { duration: 0.4, ease: [0.34, 1.1, 0.64, 1] },
       };
 
-  return (
+  return createPortal(
     <>
       {/* Backdrop */}
       <motion.div
@@ -360,6 +361,7 @@ export default function EquipmentModal({ item, onClose }) {
           100% { background-position:  200% 0; }
         }
       `}</style>
-    </>
+    </>,
+    document.body
   );
 }
