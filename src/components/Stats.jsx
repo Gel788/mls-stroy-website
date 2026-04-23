@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Wrench, Clock, MapPin, Star } from 'lucide-react';
 
 const stats = [
-  { icon: Wrench, value: 20, suffix: '+', label: 'Единиц техники', sub: 'в постоянном наличии' },
+  { icon: Wrench, value: 55, suffix: '+', label: 'Единиц техники', sub: 'в постоянном наличии' },
   { icon: Clock, value: 5, suffix: ' лет', label: 'На рынке', sub: 'опыт и репутация' },
   { icon: MapPin, value: 150, suffix: '+', label: 'Объектов', sub: 'выполнено в МО' },
   { icon: Star, value: 98, suffix: '%', label: 'Клиентов', sub: 'остаются с нами' },

@@ -205,8 +205,8 @@ export default function Hero() {
               maxWidth: 520,
             }}
           >
-            Более <span style={{ color: '#c0c0c0', fontWeight: 600 }}>20 единиц</span> спецтехники в постоянном наличии —
-            экскаваторы, погрузчики, катки, тягачи.
+            Более <span style={{ color: '#c0c0c0', fontWeight: 600 }}>55 единиц</span> спецтехники в постоянном наличии —
+            экскаваторы, погрузчики, бульдозеры, краны, катки, тягачи.
             Подача на объект от <span style={{ color: '#c0c0c0', fontWeight: 600 }}>2 часов</span>.
           </motion.p>
 
@@ -288,8 +288,8 @@ export default function Hero() {
             style={{ display: 'flex', gap: 0, flexWrap: 'wrap' }}
           >
             {[
-              { val: '20+', label: 'Единиц' },
-              { val: '7', label: 'Категорий' },
+              { val: '55+', label: 'Единиц' },
+              { val: '8', label: 'Категорий' },
               { val: '24/7', label: 'Поддержка' },
               { val: '5 лет', label: 'На рынке' },
             ].map((s, i) => (
