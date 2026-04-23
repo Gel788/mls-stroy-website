@@ -92,20 +92,20 @@ export default function Hero() {
         backgroundImage: 'url(/images/1200x900.jpeg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center 30%',
-        opacity: 0.08,
-        filter: 'grayscale(60%)',
+        opacity: 0.22,
+        filter: 'grayscale(40%)',
       }} />
 
       {/* Dark vignette */}
       <div style={{
         position: 'absolute', inset: 0,
-        background: 'radial-gradient(ellipse 80% 80% at 50% 50%, transparent 30%, rgba(5,5,5,0.8) 100%)',
+        background: 'radial-gradient(ellipse 80% 80% at 50% 50%, transparent 20%, rgba(5,5,5,0.65) 100%)',
       }} />
 
       {/* Side gradient */}
       <div style={{
         position: 'absolute', inset: 0,
-        background: 'linear-gradient(to right, rgba(5,5,5,0.97) 45%, rgba(5,5,5,0.5) 75%, rgba(5,5,5,0.2) 100%)',
+        background: 'linear-gradient(to right, rgba(5,5,5,0.92) 40%, rgba(5,5,5,0.45) 70%, rgba(5,5,5,0.15) 100%)',
       }} />
 
       {/* Particles */}
